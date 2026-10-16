@@ -1,97 +1,73 @@
 <?php
 require_once __DIR__ . '/../config/Database.php';
 
-class Cuadrado
+class Circunferencia
 {
     private PDO $pdo;
 
     public function __construct()
     {
-        $database = new Database();
-        $this->pdo = $database->conectar();
+        $this->pdo = (new Database())->conectar();
+    }
+
+    /** Fórmulas: diámetro = 2r, área = πr², perímetro = 2πr */
+    public static function calcular(float $radio): array
+    {
+        return [
+            'diametro'  => round($radio * 2, 4),
+            'area'      => round(M_PI * $radio ** 2, 4),
+            'perimetro' => round(2 * M_PI * $radio, 4),
+        ];
     }
 
     public function listar(string $buscar = ''): array
     {
-        if ($buscar !== '') {
-            $sql = "SELECT * FROM cuadrado
-                    WHERE detalle LIKE :buscarDetalle
-                       OR CAST(lado AS CHAR) LIKE :buscarLado
-                       OR CAST(area AS CHAR) LIKE :buscarArea
-                       OR CAST(perimetro AS CHAR) LIKE :buscarPerimetro
-                    ORDER BY id_cuadrado DESC";
-            $stmt = $this->pdo->prepare($sql);
-
-            $valorBuscar = '%' . $buscar . '%';
-
-            $stmt->execute([
-                'buscarDetalle' => $valorBuscar,
-                'buscarLado' => $valorBuscar,
-                'buscarArea' => $valorBuscar,
-                'buscarPerimetro' => $valorBuscar,
-            ]);
-
-            return $stmt->fetchAll();
+        if ($buscar === '') {
+            return $this->pdo->query("SELECT * FROM circunferencia ORDER BY id_circunferencia DESC")->fetchAll();
         }
 
-        $sql = "SELECT * FROM cuadrado ORDER BY id_cuadrado DESC";
-        return $this->pdo->query($sql)->fetchAll();
+        $sql = "SELECT * FROM circunferencia
+                WHERE detalle LIKE :d OR CAST(radio AS CHAR) LIKE :r
+                   OR CAST(area AS CHAR) LIKE :a OR CAST(perimetro AS CHAR) LIKE :p
+                ORDER BY id_circunferencia DESC";
+        $stmt = $this->pdo->prepare($sql);
+        $v = '%' . $buscar . '%';
+        $stmt->execute(['d' => $v, 'r' => $v, 'a' => $v, 'p' => $v]);
+        return $stmt->fetchAll();
     }
 
     public function obtenerPorId(int $id): ?array
     {
-        $sql = "SELECT * FROM cuadrado WHERE id_cuadrado = :id LIMIT 1";
-        $stmt = $this->pdo->prepare($sql);
+        $stmt = $this->pdo->prepare("SELECT * FROM circunferencia WHERE id_circunferencia = :id LIMIT 1");
         $stmt->execute(['id' => $id]);
-        $registro = $stmt->fetch();
-
-        return $registro ?: null;
+        return $stmt->fetch() ?: null;
     }
 
-    public function guardar(string $detalle, float $lado): bool
+    public function guardar(string $detalle, float $radio): bool
     {
-        $area = $lado * $lado;
-        $perimetro = $lado * 4;
-
-        $sql = "INSERT INTO cuadrado(detalle, lado, area, perimetro)
-                VALUES(:detalle, :lado, :area, :perimetro)";
-        $stmt = $this->pdo->prepare($sql);
-
-        return $stmt->execute([
-            'detalle' => $detalle,
-            'lado' => $lado,
-            'area' => $area,
-            'perimetro' => $perimetro,
-        ]);
+        $c = self::calcular($radio);
+        $stmt = $this->pdo->prepare(
+            "INSERT INTO circunferencia(detalle, radio, diametro, area, perimetro)
+             VALUES(:detalle, :radio, :diametro, :area, :perimetro)"
+        );
+        return $stmt->execute(['detalle' => $detalle, 'radio' => $radio] + $c);
     }
 
-    public function actualizar(int $id, string $detalle, float $lado): bool
+    public function actualizar(int $id, string $detalle, float $radio): bool
     {
-        $area = $lado * $lado;
-        $perimetro = $lado * 4;
-
-        $sql = "UPDATE cuadrado
-                SET detalle = :detalle,
-                    lado = :lado,
-                    area = :area,
-                    perimetro = :perimetro
-                WHERE id_cuadrado = :id";
-        $stmt = $this->pdo->prepare($sql);
-
-        return $stmt->execute([
-            'id' => $id,
-            'detalle' => $detalle,
-            'lado' => $lado,
-            'area' => $area,
-            'perimetro' => $perimetro,
-        ]);
+        $c = self::calcular($radio);
+        $stmt = $this->pdo->prepare(
+            "UPDATE circunferencia
+             SET detalle = :detalle, radio = :radio, diametro = :diametro,
+                 area = :area, perimetro = :perimetro
+             WHERE id_circunferencia = :id"
+        );
+        return $stmt->execute(['id' => $id, 'detalle' => $detalle, 'radio' => $radio] + $c);
     }
 
     public function eliminar(int $id): bool
     {
-        $sql = "DELETE FROM cuadrado WHERE id_cuadrado = :id";
-        $stmt = $this->pdo->prepare($sql);
-
+        $stmt = $this->pdo->prepare("DELETE FROM circunferencia WHERE id_circunferencia = :id");
         return $stmt->execute(['id' => $id]);
     }
 }

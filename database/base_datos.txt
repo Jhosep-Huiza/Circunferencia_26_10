@@ -1,6 +1,5 @@
--- Estructura reconstruida a partir del código PHP del proyecto.
--- No contiene registros históricos eliminados.
-CREATE DATABASE IF NOT EXISTS `circunferencia_db`   CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+-- Base de datos: Circunferencia (área y perímetro)
+CREATE DATABASE IF NOT EXISTS `circunferencia_db` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE `circunferencia_db`;
 
 CREATE TABLE IF NOT EXISTS `usuario` (
@@ -12,18 +11,21 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   UNIQUE KEY `uq_usuario_correo` (`correo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `cuadrado` (
-  `id_cuadrado` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `detalle` TEXT NULL,
-  `lado` DOUBLE NOT NULL,
-  `area` DOUBLE NOT NULL,
-  `perimetro` DOUBLE NOT NULL,
+CREATE TABLE IF NOT EXISTS `circunferencia` (
+  `id_circunferencia` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `detalle` VARCHAR(255) NOT NULL DEFAULT '',
+  `radio` DECIMAL(14,4) NOT NULL,
+  `diametro` DECIMAL(14,4) NOT NULL,
+  `area` DECIMAL(22,4) NOT NULL,
+  `perimetro` DECIMAL(18,4) NOT NULL,
   `fecha_registro` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_cuadrado`)
+  PRIMARY KEY (`id_circunferencia`),
+  KEY `idx_circ_fecha` (`fecha_registro`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Usuario inicial: cambiar esta contraseña después de ingresar.
--- El código PHP actual admite contraseñas simples y hashes de password_hash().
+-- Si ya tenías la tabla `cuadrado`, puedes borrarla: DROP TABLE IF EXISTS `cuadrado`;
+
+-- Usuario inicial (cambia la clave luego; AuthController acepta texto simple o password_hash)
 INSERT INTO `usuario` (`nombre`, `correo`, `clave`)
 SELECT 'Administrador', 'admin@circulo', '123'
 WHERE NOT EXISTS (SELECT 1 FROM `usuario` WHERE `correo` = 'admin@circulo');
