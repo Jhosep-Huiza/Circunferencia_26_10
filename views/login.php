@@ -25,15 +25,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Calculadora de área y perímetro de la circunferencia">
     <meta name="author" content="BC TECH">
-    <link rel="icon" href="../imagenes/icono.png">
-    <link rel="stylesheet" href="../assetes/css/style.css">
+    <link rel="icon" href="../image/icono.png">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <title>Circunferencia · Ingresar</title>
 </head>
 <body>
     <main class="login">
         <section class="portada" aria-hidden="true">
             <!-- Cambia por tu imagen: ../imagenes/portada.jpg -->
-            <img src="../imagenes/portada.jpg" alt="" onerror="this.remove()">
+            <img src="../image/portada.jpg" alt="" onerror="this.remove()">
             <svg viewBox="0 0 200 200" class="compas">
                 <circle cx="100" cy="100" r="80"/>
                 <line x1="100" y1="100" x2="180" y2="100"/>
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </section>
 
         <form action="" method="post" id="frmLogin" class="panel">
-            <img src="../imagenes/logo.png" alt="Logo" class="logo">
+            <img src="../image/diametro.png" alt="Logo" class="logo">
             <h1>Bienvenido</h1>
             <p class="sub">Ingresa para calcular el área y el perímetro de una circunferencia.</p>
 

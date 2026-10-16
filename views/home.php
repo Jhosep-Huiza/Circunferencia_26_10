@@ -27,14 +27,14 @@ $idActual = $editar['id_circunferencia'] ?? '';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Cálculo del área y perímetro de la circunferencia">
     <meta name="author" content="BC TECH">
-    <link rel="icon" href="../imagenes/icono.png">
-    <link rel="stylesheet" href="../assetes/css/style_home.css">
+    <link rel="icon" href="../image/icono.png">
+    <link rel="stylesheet" href="../assets/css/style_home.css">
     <title>Circunferencia · Calculadora</title>
 </head>
 <body>
     <header class="top">
         <a class="marca" href="home.php">
-            <img src="../imagenes/logo.png" alt="">
+            <img src="../image/logo.png" alt="">
             <span>Matemáticas</span>
         </a>
         <nav>
@@ -139,6 +139,6 @@ $idActual = $editar['id_circunferencia'] ?? '';
         </section>
     </main>
 
-    <script src="../assetes/js/app.js?v=3"></script>
+    <script src="../assets/js/app.js?v=3"></script>
 </body>
 </html>
