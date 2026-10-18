@@ -34,7 +34,7 @@ $idActual = $editar['id_circunferencia'] ?? '';
 <body>
     <header class="top">
         <a class="marca" href="home.php">
-            <img src="../image/logo.png" alt="">
+            <img src="../image/pi.png" alt="Pi">
             <span>Matemáticas</span>
         </a>
         <nav>

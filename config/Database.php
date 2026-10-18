@@ -3,7 +3,7 @@ class Database{
     private string $host= 'localhost';
     private string $db = 'circunferencia_db';
     private string $user = 'root';
-    private string $pass = 'jhosep_582006';
+    private string $pass = '';
     private string $charset = 'utf8mb4';
 
     public function conectar(): PDO{
